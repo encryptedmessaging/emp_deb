@@ -1,6 +1,0 @@
-[Desktop Entry]
-Version=1.0
-Type=Application
-Exec=/usr/share/emp/emp_client.sh
-Name=EMP Local Client
-Icon=emp
