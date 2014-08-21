@@ -1,0 +1,11 @@
+Package: emp
+Version: 0.1.4
+Architecture: amd64
+Maintainer: Ethan Gordon <ekgordon2@gmail.com>
+Installed-Size: 6608
+Depends: fonts-roboto (>= 4.0), libsqlite3-0 (>= 3.8), libjs-jquery (>= 1.7.2), libc6 (>= 2.4)
+Section: mail
+Priority: optional
+Homepage: http://github.com/encryptedmessaging/emp
+Description: Local Encrypted Messaging Client
+ Encrypted Messaging Protocol Node and Local Client

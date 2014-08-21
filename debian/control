@@ -1,0 +1,13 @@
+Source: emp
+Section: mail
+Priority: optional
+Maintainer: Ethan Gordon <ekgordon2@gmail.com>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.4
+Homepage: http://github.com/encryptedmessaging/emp
+
+Package: emp
+Architecture: amd64
+Depends: fonts-roboto (>= 4.0), libsqlite3-0 (>= 3.8), libjs-jquery (>= 1.7.2), ${shlibs:Depends}, ${misc:Depends}
+Description: Local Encrypted Messaging Client
+ Encrypted Messaging Protocol Node and Local Client

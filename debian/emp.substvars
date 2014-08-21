@@ -1,0 +1,2 @@
+shlibs:Depends=libc6 (>= 2.4), libsqlite3-0 (>= 3.7.15)
+misc:Depends=

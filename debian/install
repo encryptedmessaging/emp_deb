@@ -1,0 +1,5 @@
+bin/emp usr/bin
+man/emp.1.gz usr/share/man/man1
+emp.png usr/share/icons
+emp.desktop usr/share/applications
+config/* usr/share/emp

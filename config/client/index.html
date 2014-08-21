@@ -1,0 +1,254 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="A Local Client to communicate with your local EMP Email node.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EMPLocal | The Local EMP Client</title>
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="196x196" href="images/touch/chrome-touch-icon-196x196.png">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="EMPLocal">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+    <meta name="msapplication-TileColor" content="#3372DF">
+
+    <!-- build:css styles/components/main.min.css -->
+    <link rel="stylesheet" href="styles/h5bp.css">
+    <link rel="stylesheet" href="styles/components/components.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/app.css">
+    <!-- endbuild -->
+
+    <link rel="stylesheet" href="styles/colorbox.css">
+    <script src="scripts/jquery.min.js"></script>
+    <script src="scripts/jquery.colorbox.js"></script>
+  </head>
+  <body>
+    <div id="status"></div>
+    <header class="app-bar promote-layer">
+      <div class="app-bar-container">
+        <button class="menu"><img src="images/hamburger.svg" alt="Menu"></button>
+        <h1 class="logo">EMPLocal: The Local EMP Client</h1>
+        <section class="app-bar-actions">
+        <!-- Put App Bar Buttons Here -->
+        </section>
+      </div>
+    </header>
+
+    <nav class="navdrawer-container promote-layer">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="#inbox">Inbox</a></li>
+        <li><a href="#outbox">Outbox</a></li>
+        <li><a href="#sendbox">Sent</a></li>
+        <li><a href="#myaddr">My Addresses</a></li>
+        <li><a href="#address">Contacts</a></li>
+      </ul>
+    </nav>
+    <main>
+      <header>
+        <h3 class="xlarge" id="box">Loading...</h3>
+        <div class="datarow">
+        <a onclick="reloadPage(true)" class="button--primary" id="refresh">Refresh</a>
+        <a onclick="newModal()" class="button--primary" id="new">New Message</a>
+        <a onclick="pubModal()" class="button--primary" id="pub">Publish Message</a>
+        </div>
+      </header>
+      <table id="main">
+        <colgroup>
+        </colgroup>
+        <thead>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </main>
+
+    <!-- Modals -->
+
+    <div id="messageModal">
+      <h4 class="medium">
+        From: <span id="sender"></span> | 
+        To: <span id="recipient"></span> | 
+        Sent: <span id="sent"></span>
+      </h4>
+      <h3 class="large"><b id="subject"></b></h3>
+      <p class="base" id="text"></p>
+      <p class="small">MIME Type: <span id="mime"></span></p>
+      <p class="base datarow">
+        <a class="button--secondary color--danger" id="purge">Mark As Read (Purge)</a>
+        <a class="button--secondary color--danger" id="delete">Delete</a>
+      </p>
+    </div>
+
+    <div id="newModal">
+      <h2 class="large">New Message</h2>
+      <hr />
+      <form onsubmit="return sendMessage()" name="sendmsg">
+        <p class="medium"> From:
+          <select name="from" id="from" class="formSelect">
+          </select>
+        </p>
+        <p class="medium"> To:
+          <select name="to" id="to" class="formSelect">
+          </select>
+        </p>
+        <p class="medium"> Subject:
+          <input type="text" name="subject" class="formText"/>
+        </p>
+        <h4 class="medium"><b>Message:</b></h4>
+        <textarea name="message" class="formText" ></textarea>
+        <p class="medium">
+        <input type="submit" value="Send" />
+        </p>
+      </form>
+    </div>
+
+    <div id="pubModal">
+      <h2 class="large">Publish Message</h2>
+      <hr />
+      <form onsubmit="return pubMessage()" name="pubmsg">
+        <p class="medium"> From:
+          <select name="from" id="from" class="formSelect">
+          </select>
+        </p>
+        <p class="medium"> Subject:
+          <input type="text" name="subject" class="formText"/>
+        </p>
+        <h4 class="medium"><b>Message:</b></h4>
+        <textarea name="message" class="formText" ></textarea>
+        <p class="medium">
+        <input type="submit" value="Send" />
+        </p>
+      </form>
+    </div>
+
+    <div id="addrDetailModal">
+      <h2 class="large">Address Detail</h2>
+      <hr />
+      <h3>Address: <span id="address"></span></h3>
+      <form name="addrDetail" onsubmit="return addUpdateAddress('addrDetail')">
+        <input type="hidden" id="addr" name="addr" />
+      <p class="medium"> Label:<br />
+        <input type="text" name="addrlabel" id="addrlabel" class="formText" />
+      </p>
+      <p class="medium"> Public Key:<br />
+        <input type="text" id="pubkey" name="pubkey" class="formText" />
+      </p>
+      <p class="medium"> Private Key:<br />
+        <input type="text" id="privkey" name="privkey" class="formText" />
+      </p>
+      <p class="medium">I Own This Address: <input type="checkbox" name="registered" id="registered" /></p>
+      <p class="medium">Subscribe to Address: <input type="checkbox" name="subscribed" id="subscribed" /></p>
+      <p>
+        <input type="submit" value="Update Address" />
+      </p>
+      </form>
+      <p class="base datarow">
+        <a class="button--secondary color--danger" id="forget">Forget Address</a>
+      </p>
+    </div>
+
+    <div id="addrModal">
+      <h2 class="large">New Address</h2>
+      <hr />
+      <div class="datarow">
+        <a onclick="createAddress()" class="button--primary">Generate New</a>
+        Note: Will appear under "My Addresses"
+      </div>
+      <h3>Import New:</h3>
+      <form onsubmit="return addUpdateAddress('addrForm')" name="addrForm">
+      <p class="medium"> Address:<br />
+        <input type="text" name="addr" class="formText" />
+      </p> 
+      <p class="medium"> Label (optional):<br />
+        <input type="text" name="addrlabel" class="formText" />
+      </p>
+      <p class="medium"> Public Key (optional):<br />
+        <input type="text" name="pubkey" class="formText" />
+      </p>
+      <p class="medium"> Private Key (optional):<br />
+        <input type="text" name="privkey" class="formText" />
+      </p>
+      <p class="medium" >I Own This Address: <input type="checkbox" name="registered" id="registered" /></p>
+      <p class="medium">Subscribe to Address: <input type="checkbox" name="subscribed" id="subscribed" /></p>
+      <p>
+        <input type="submit" value="Update Address" />
+      </p>
+      </form>
+    </div>
+
+    <div id="loginModal">
+      <h2 class="large">RPC Login</h2>
+      <hr />
+      <h3>RPC Credentials should be located in ~/.config/emp/msg.conf.</h3>
+      <h3 class="medium color--danger" style="height: 40px"><b id="loginError">Incorrect Credentials</b></h3>
+      <form name="loginForm" onsubmit="return credentialCheck()" >
+        <p class="medium">Username:<br />
+          <input type="text" name="user" class="formText" />
+        </p>
+        <p class="medium">Password:<br />
+          <input type="password" name="pass" class="formText" />
+        </p>
+        <p class="medium">Remember Me (Uses Cookies): <input type="checkbox" name="remember" /></p>
+        <p>
+          <input type="submit" value="Log In" />
+        </p>
+      </form>
+    </div>
+
+
+    <!-- End Modals -->
+
+    <!-- build:js scripts/main.min.js -->
+    <script src="scripts/main.js"></script>
+    <script src="scripts/app.js"></script>
+    <!-- endbuild -->
+
+    <script type="text/javascript">
+    $(document).ready(function() {
+      // Hide Modals
+      $("#messageModal").hide();
+      $("#newModal").hide();
+      $("#pubModal").hide();
+      $("#addrDetailModal").hide();
+      $("#addrModal").hide();
+      $("#loginModal").hide();
+
+      window.emplogin = getCookie("emplogin")
+      if (!isLoggedIn()) {
+        loginModal();
+      } else {
+        reloadPage(true);
+      }
+    });
+
+    function unForceReload() {
+        reloadPage(false);
+    }
+
+    if ("onhashchange" in window) { // event supported?
+      window.onhashchange = function () {
+        reloadPage(false);
+      }
+      setInterval(unForceReload, 3000); 
+    } else { // event not supported:
+      var storedHash = window.location.hash;
+      window.setInterval(function () {
+        if (window.location.hash != storedHash) {
+          storedHash = window.location.hash;
+          reloadPage();
+        }
+      }, 100);
+    }
+    </script>
+  </body>
+</html>
