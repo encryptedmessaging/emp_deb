@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Get Ports
-PORTS=$(sed -n 's/.*port *= *\([^ ]*.*\)/\1/p' < ~/.config/emp/msg.conf)
+PORTS=$(sed -n 's/.*port *= *\([^ ]*.*\)/\1/p' < /usr/share/emp/msg.conf)
 read -a array <<< $PORTS
 
 # Final Output
